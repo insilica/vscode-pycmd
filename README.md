@@ -1,3 +1,3 @@
-# Hello World Extension for Visual Studio Code
+# vscode-pycmd
 
-This is a simple Hello World extension for Visual Studio Code.
+A simple extension providing the `pycmd` vscode command, which can be mapped to a hotkey to allow sending python expressions from an open editor to the active terminal.
