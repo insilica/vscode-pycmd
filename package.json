@@ -3,6 +3,7 @@
     "displayName": "PYCMD",
     "description": "evaluate python expression with a hotkey in a terminal",
     "version": "0.0.1",
+    "repository": "https://github.com/insilica/vscode-pycmd.git",
     "engines": {
         "vscode": "^1.80.0"
     },

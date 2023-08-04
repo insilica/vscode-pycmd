@@ -4,6 +4,10 @@ This is a straightforward extension that introduces a `pycmd` command in VS Code
 
 Installation Steps:
 
-1. Install `vsce`: `npm install -g vsce`
+1. Install vsce: `npm install -g vsce`
 2. Build the extension: `vsce package`
-3. In VS Code, go to Extensions, click the three dots, select `Install from VSIX`, and choose the `.vsix` file generated in step 2.
+3. In VS Code
+   1. go to Extensions
+   2. click the three dots
+   3. select `Install from VSIX`
+   4. choose the `.vsix` file generated in step 2.

@@ -28,10 +28,17 @@ function pyexpr(editor: vscode.TextEditor, terminal: vscode.Terminal){
 
 	while (nextLine < doc.lineCount) {
 		let nextLineText = doc.lineAt(nextLine).text.replace(leadingWhitespace, '');
+
+		// If the next line is empty, continue
+		if (nextLineText.length === 0) { nextLine++; continue }
+		
 		let whitespace = getLeadingWhitespace(nextLineText);
+		
+		// if the next line is not indented add newline and break
+		if (whitespace.length === 0) { text += "\n"; break }
+
 		text = text + '\n' + nextLineText;
 
-		if (whitespace.length === 0) { break }
 		nextLine++;
 	}
 
@@ -41,6 +48,13 @@ function pyexpr(editor: vscode.TextEditor, terminal: vscode.Terminal){
 
 function pycmd(editor: vscode.TextEditor, terminal: vscode.Terminal){
 
+	// If there is a selection, send that to the terminal
+	if (!editor.selection.isEmpty) {
+		terminal.sendText(editor.document.getText(editor.selection) + '\n');
+		return;
+	}
+	
+	// Otherwise try to build the expression starting at the active line
 	let expr = pyexpr(editor, terminal);
 	if (expr === null) { return }
 	
@@ -48,7 +62,8 @@ function pycmd(editor: vscode.TextEditor, terminal: vscode.Terminal){
 	let numlines = expr.split('\n').length;
 	let curline = editor.selection.active.line;
 	let newpos = Math.min(curline + numlines, editor.document.lineCount - 1)
-	const newPosition = new vscode.Position(newpos, 0);
+	let curindent = editor.document.lineAt(curline).firstNonWhitespaceCharacterIndex;
+	const newPosition = new vscode.Position(newpos, curindent);
 	editor.selection = new vscode.Selection(newPosition, newPosition);
 
 	terminal.sendText(`${expr}\n`);
