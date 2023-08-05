@@ -4,7 +4,7 @@ import sys
 code = sys.argv[1]
 
 try:
-    ast.parse(code)
-    print("Valid")
+    module = ast.parse(code)
+    print(len(module.body))
 except SyntaxError:
-    print("Invalid")
+    print("0")

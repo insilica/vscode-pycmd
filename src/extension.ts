@@ -6,12 +6,13 @@ function getLeadingWhitespace(text: string): string {
 	return matchResult ? matchResult[0] : '';
 }
 
-function checkExpression(text: string): boolean {
+function numExpressions(text: string): number {
 	const pyscript = __dirname + '/../scripts/check_expression.py';
-	const result = cp.execSync(`python3 ${pyscript} "${text}"`).toString();
-	return result.trim() === 'Valid';
+	let result = cp.execSync(`python3 ${pyscript} "${text}"`)
+	return parseInt(result.toString().trim())
 }
 
+// TODO This could be more efficient by calling ast.parse less often
 function pyexpr(editor: vscode.TextEditor, terminal: vscode.Terminal){
 	let lineNumber = editor.selection.active.line;
 	let doc = editor.document;
@@ -21,30 +22,25 @@ function pyexpr(editor: vscode.TextEditor, terminal: vscode.Terminal){
 	const leadingWhitespace = getLeadingWhitespace(text)
 	text = text.replace(leadingWhitespace, '');
 
-	let validexpr = checkExpression(text);
-	if (validexpr) { return text }
-
 	let nextLine = lineNumber + 1;
+	
+	if(numExpressions(text) === 1) { return text; }
 
+	let expr = ""
 	while (nextLine < doc.lineCount) {
 		let nextLineText = doc.lineAt(nextLine).text.replace(leadingWhitespace, '');
 
-		// If the next line is empty, continue
-		if (nextLineText.length === 0) { nextLine++; continue }
-		
-		let whitespace = getLeadingWhitespace(nextLineText);
-		
-		// if the next line is not indented add newline and break
-		if (whitespace.length === 0) { text += "\n"; break }
-
 		text = text + '\n' + nextLineText;
-
 		nextLine++;
-	}
 
-	validexpr = checkExpression(text);
-	if (validexpr) { return text }else{ return null }
+		let nexpr = numExpressions(text)
+        if(nexpr > 1){ break; } // break if multiple expressions
+        if(nexpr === 1){ expr = text; } // save if single expression
+	}
+	
+	return expr;
 }
+
 
 function pycmd(editor: vscode.TextEditor, terminal: vscode.Terminal){
 
@@ -66,7 +62,9 @@ function pycmd(editor: vscode.TextEditor, terminal: vscode.Terminal){
 	const newPosition = new vscode.Position(newpos, curindent);
 	editor.selection = new vscode.Selection(newPosition, newPosition);
 
-	terminal.sendText(`${expr}\n`);
+	expr = expr.endsWith('\n\n') ? expr : expr + '\n';
+	terminal.sendText(`${expr}`);
+	
 }
 
 export function activate(context: vscode.ExtensionContext) {
