@@ -1,0 +1,8 @@
+# Ignore test files
+test/
+
+# Ignore configuration files
+.vscode/
+
+# Ignore temporary files
+*.tmp
