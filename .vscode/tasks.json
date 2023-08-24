@@ -21,6 +21,30 @@
         "clear": false
       },
       "problemMatcher": []
+    },
+    {
+      "label": "npm: watch",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "esbuild-watch"
+      ],
+      "isBackground": true,
+      "problemMatcher": {
+        "base": "$tsc-watch", 
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": ".*"
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      }
     }
   ]
 }

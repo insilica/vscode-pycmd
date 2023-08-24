@@ -6,7 +6,7 @@
       "request": "launch",
       "name": "Launch Extension",
       "outFiles": ["${workspaceFolder}/out/**/*.js"],
-      "preLaunchTask": "npm: watch"
+      // "preLaunchTask": "npm: watch"
     }
   ]
 }
