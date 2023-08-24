@@ -11,7 +11,7 @@
     "categories": [
         "Other"
     ],
-    "main": "./out/extension.js",
+    "main": "./out/main.js",
     "activationEvents": [
         "onCommand:extension.pycmd"
     ],

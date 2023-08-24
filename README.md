@@ -1,6 +1,6 @@
 # vscode-pycmd
 
-`pycmd` provides a command that runs the active python expression in the active terminal. Below is a sensible way to use it in keybindings:
+The `extension.pycmd` command runs the first complete python expression following the active-editor cursor in the active terminal.
 
 ```json
 {
