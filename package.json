@@ -2,7 +2,7 @@
     "name": "pycmd",
     "displayName": "PYCMD",
     "description": "evaluate python expression with a hotkey in a terminal",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "repository": "https://github.com/insilica/vscode-pycmd.git",
     "publisher": "insilica",
     "engines": {

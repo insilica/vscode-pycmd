@@ -68,12 +68,6 @@ async function pyexpr(editor: vscode.TextEditor, terminal: vscode.Terminal){
 			if(nexpr === 1){ expr = text; } // save if single expression
 		}
 
-		// Remove all empty lines
-        expr = expr.replace(/^\s*[\r\n]/gm, '');
-        
-		// Add an empty line at the end
-        expr += '\n';
-		
 		return expr;
 	} catch (error) {
 		console.error(error);
@@ -96,10 +90,18 @@ async function pycmd(){
 	
 	// Otherwise try to build the expression starting at the active line
 	let expr = await pyexpr(editor, terminal);
+	
+	const numlines = expr.split('\n').length;
+
+	// Remove all empty lines
+    expr = expr.replace(/^\s*[\r\n]/gm, '');
+
+	// Add an empty line at the end
+	expr += '\n';
+
 	if (expr === null) { return }
 	
 	// Move cursor to the end of the expression
-	let numlines = expr.split('\n').length;
 	let curline = editor.selection.active.line;
 	let newpos = Math.min(curline + numlines, editor.document.lineCount - 1)
 	let curindent = editor.document.lineAt(curline).firstNonWhitespaceCharacterIndex;
