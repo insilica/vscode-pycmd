@@ -67,6 +67,12 @@ async function pyexpr(editor: vscode.TextEditor, terminal: vscode.Terminal){
 			if(nexpr > 1){ break; } // break if multiple expressions
 			if(nexpr === 1){ expr = text; } // save if single expression
 		}
+
+		// Remove all empty lines
+        expr = expr.replace(/^\s*[\r\n]/gm, '');
+        
+		// Add an empty line at the end
+        expr += '\n';
 		
 		return expr;
 	} catch (error) {
